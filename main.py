@@ -2,9 +2,35 @@
 from fastapi import FastAPI
 import binance
 import requests
+from pyngrok import ngrok
+import time
+import nest_asyncio
+from threading import Thread
+from datetime import datetime
+
 client = binance.Client()
 
 app = FastAPI()
+
+def refresh_ngrok_tunnel():
+    ngrok_tunnel = None
+    try:
+        while True:
+            new_ngrok_tunnel = ngrok.connect(8000)
+            print('Public URL:', new_ngrok_tunnel.public_url)
+            print(datetime.now())
+            time.sleep(300*2)  # Sleep for 5 minutes (300 seconds)
+
+            if ngrok_tunnel:
+                ngrok.disconnect(ngrok_tunnel.public_url)
+                ngrok.kill()  # Kill ngrok process to avoid conflicts
+
+            ngrok_tunnel = new_ngrok_tunnel
+
+    except KeyboardInterrupt:
+        if ngrok_tunnel:
+            ngrok.disconnect(ngrok_tunnel.public_url)
+            ngrok.kill()
 
 @app.get("/")
 def read_root():
