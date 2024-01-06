@@ -12,25 +12,10 @@ client = binance.Client()
 
 app = FastAPI()
 
-def refresh_ngrok_tunnel():
-    ngrok_tunnel = None
-    try:
-        while True:
-            new_ngrok_tunnel = ngrok.connect(8000)
-            print('Public URL:', new_ngrok_tunnel.public_url)
-            print(datetime.now())
-            time.sleep(300*2)  # Sleep for 5 minutes (300 seconds)
-
-            if ngrok_tunnel:
-                ngrok.disconnect(ngrok_tunnel.public_url)
-                ngrok.kill()  # Kill ngrok process to avoid conflicts
-
-            ngrok_tunnel = new_ngrok_tunnel
-
-    except KeyboardInterrupt:
-        if ngrok_tunnel:
-            ngrok.disconnect(ngrok_tunnel.public_url)
-            ngrok.kill()
+auth="2aZeouhaHuJSXZQ9WatZC3LQieO_6ckrQG71twNRutGxaLh3H"
+ngrok.set_auth_token(auth)
+public_url = ngrok.connect(8000)
+print(" * ngrok tunnel \"{}\" -> \"http://127.0.0.1:{}/\"".format(public_url, 8000))
 
 @app.get("/")
 def read_root():
