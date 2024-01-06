@@ -2,3 +2,4 @@ fastapi==0.85
 requests==2.25.1
 python-binance==1.0.19
 uvicorn==0.18.3
+pyngrok==6.1.2
