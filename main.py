@@ -4,8 +4,8 @@ import binance
 import requests
 from pyngrok import ngrok
 import time
-import nest_asyncio
-from threading import Thread
+#import nest_asyncio
+#from threading import Thread
 from datetime import datetime
 
 client = binance.Client()
